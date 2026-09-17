@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miaofan.mapper.SeckillActivityMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into seckill_activity (name, dish_id, seckill_price, total_stock, sold_stock, per_user_limit,
+                                      start_time, end_time, status, create_time, update_time, create_user, update_user)
+        values (#{name}, #{dishId}, #{seckillPrice}, #{totalStock}, #{soldStock}, #{perUserLimit},
+                #{startTime}, #{endTime}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
+    </insert>
+
+    <update id="update">
+        update seckill_activity
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="dishId != null">dish_id = #{dishId},</if>
+            <if test="seckillPrice != null">seckill_price = #{seckillPrice},</if>
+            <if test="totalStock != null">total_stock = #{totalStock},</if>
+            <if test="soldStock != null">sold_stock = #{soldStock},</if>
+            <if test="perUserLimit != null">per_user_limit = #{perUserLimit},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 活动列表统一关联菜品, 取出菜品名称、图片与原价 -->
+    <sql id="activityColumns">
+        a.id, a.name, a.dish_id, a.seckill_price, a.total_stock, a.sold_stock, a.per_user_limit,
+        a.start_time, a.end_time, a.status,
+        d.name as dishName, d.image as dishImage, d.price as originalPrice
+    </sql>
+
+    <select id="pageQuery" resultType="com.miaofan.vo.SeckillActivityVO">
+        select
+        <include refid="activityColumns"/>
+        from seckill_activity a
+        left join dish d on a.dish_id = d.id
+        <where>
+            <if test="name != null and name != ''">
+                and a.name like concat('%', #{name}, '%')
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="dishId != null">
+                and a.dish_id = #{dishId}
+            </if>
+        </where>
+        order by a.status asc, a.start_time desc
+    </select>
+
+    <select id="getById" resultType="com.miaofan.vo.SeckillActivityVO">
+        select
+        <include refid="activityColumns"/>
+        from seckill_activity a
+        left join dish d on a.dish_id = d.id
+        where a.id = #{id}
+    </select>
+
+    <!-- 用户端只展示: 已上架 且 正在活动时间区间内 -->
+    <select id="listOnline" resultType="com.miaofan.vo.SeckillActivityVO">
+        select
+        <include refid="activityColumns"/>
+        from seckill_activity a
+        left join dish d on a.dish_id = d.id
+        where a.status = 1
+          and now() between a.start_time and a.end_time
+        order by a.end_time asc
+    </select>
+</mapper>

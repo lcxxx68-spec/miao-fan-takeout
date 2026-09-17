@@ -1,0 +1,37 @@
+# ===================== Java / Maven 构建产物 =====================
+**/target/
+*.class
+
+# ===================== IDE =====================
+.idea/
+*.iml
+.vscode/
+
+# ===================== 本机私有配置(含明文密钥,切勿提交) =====================
+backend/miao-fan-takeout/mf-server/src/main/resources/application-dev.yml
+
+# ===================== nginx 运行环境 =====================
+# nginx.exe 已入库(克隆即可直接用), 这里只忽略运行期产生的日志/PID/临时文件
+nginx/logs/*
+!nginx/logs/.gitkeep
+nginx/temp/*
+!nginx/temp/.gitkeep
+*.log
+
+# ===================== 前端产物 =====================
+# 管理端已完成主题改造与品牌替换, 产物纳入版本控制(去掉 source map, 避免把原始源码一起提交)
+nginx/html/miaofan/**/*.map
+# 小程序已完成品牌与配色改造并新增限时抢购页, 产物纳入版本控制
+
+# ===================== 只留本地、不入库的文件 =====================
+# 内部交接/改造笔记: 含课程来源、简历话术等, 只在本机保留
+docs/会话交接.md
+docs/魔改计划.md
+# 微信开发者工具的个人配置
+frontend-miniprogram/project.private.config.json
+
+# ===================== 系统文件 =====================
+__pycache__/
+Thumbs.db
+Desktop.ini
+.DS_Store

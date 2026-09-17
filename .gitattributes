@@ -1,0 +1,2 @@
+# cmd 解析 LF 结尾的 bat 有已知 bug(goto 标签会错行),固定为 CRLF
+*.bat text eol=crlf

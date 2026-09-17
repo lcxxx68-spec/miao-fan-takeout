@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miaofan.mapper.EmployeeMapper">
+    <select id="pageQuery" resultType="com.miaofan.entity.Employee">
+        select * from employee
+        <where>
+            <if test="name!=null and name!=''">
+                name like concat("%",#{name},"%")
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <update id="update">
+        update employee
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="idNumber != null and idNumber != ''">
+                id_number = #{idNumber},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+            update_time = now()
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

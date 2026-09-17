@@ -1,0 +1,45 @@
+<view class="page">
+    <view class="hero">
+        <image class="hero-logo" src="/static/logo.png" mode="aspectFit"></image>
+        <view class="hero-text">
+            <view class="hero-title">秒饭 · 限时抢购</view>
+            <view class="hero-sub">整点开抢，抢完即止</view>
+        </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="state">
+        <image class="state-loading" src="/static/splash.png" mode="aspectFit"></image>
+        <text class="state-text">正在加载活动…</text>
+    </view>
+
+    <view wx:elif="{{!activities.length}}" class="state">
+        <text class="state-text">当前没有进行中的抢购活动</text>
+        <text class="state-sub">可以先看看菜品，活动开始后再来</text>
+    </view>
+
+    <view wx:else class="list">
+        <view class="card" wx:for="{{activities}}" wx:key="id">
+            <image class="card-img" src="{{item.dishImage || '/static/logo.png'}}" mode="aspectFill"></image>
+            <view class="card-body">
+                <view class="card-name">{{item.dishName}}</view>
+                <view class="card-price">
+                    <text class="price-now">¥{{item.seckillPrice}}</text>
+                    <text class="price-old">¥{{item.originalPrice}}</text>
+                </view>
+                <view class="card-meta">
+                    <text class="meta-stock {{item.stockLow ? 'low' : ''}}">{{item.stockText}}</text>
+                    <text class="meta-time">{{item.timeText}}</text>
+                </view>
+            </view>
+            <view class="card-action">
+                <button
+                        class="card-btn {{item.canBuy ? '' : 'disabled'}}"
+                        data-id="{{item.id}}"
+                        disabled="{{!item.canBuy || submitting}}"
+                        bindtap="onSeckill">{{item.btnText}}</button>
+            </view>
+        </view>
+    </view>
+
+    <view class="tips">抢购成功后库存实时预扣，15 分钟内未支付会自动释放</view>
+</view>

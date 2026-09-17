@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.miaofan.mapper.SeckillRecordMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into seckill_record (activity_id, user_id, order_id, status, create_time, update_time)
+        values (#{activityId}, #{userId}, #{orderId}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update">
+        update seckill_record
+        <set>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

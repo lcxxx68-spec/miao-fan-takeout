@@ -1,0 +1,62 @@
+server:
+  port: 18080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    druid:
+      driver-class-name: ${miaofan.datasource.driver-class-name}
+      url: jdbc:mysql://${miaofan.datasource.host}:${miaofan.datasource.port}/${miaofan.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${miaofan.datasource.username}
+      password: ${miaofan.datasource.password}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.miaofan.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      miaofan:
+        mapper: debug
+        service: info
+        controller: info
+
+miaofan:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: miaofan-admin
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+
+    user-secret-key: miaofan-user
+    user-ttl: 7200000
+    user-token-name: authentication
+  alioss:
+    endpoint: ${miaofan.alioss.endpoint}
+    access-key-id: ${miaofan.alioss.access-key-id}
+    access-key-secret: ${miaofan.alioss.access-key-secret}
+    bucket-name: ${miaofan.alioss.bucket-name}
+  redis:
+    host: ${miaofan.redis.host}
+    port: ${miaofan.redis.port}
+    database: ${miaofan.redis.database}
+  wechat:
+    appid: ${miaofan.wechat.appid}
+    secret: ${miaofan.wechat.secret}
+#    mchid: ${miaofan.wechat.mchid}
+#    mchSerialNo: ${miaofan.wechat.mchSerialNo}
+#    privateKeyFilePath: ${miaofan.wechat.privateKeyFilePath}
+#    apiV3Key: ${miaofan.wechat.apiV3Key}
+#    weChatPayCertFilePath: ${miaofan.wechat.weChatPayCertFilePath}
+#    notifyUrl: ${miaofan.wechat.notifyUrl}
+#    refundNotifyUrl: ${miaofan.wechat.refundNotifyUrl}
