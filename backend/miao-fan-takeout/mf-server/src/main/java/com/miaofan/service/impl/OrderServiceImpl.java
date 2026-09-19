@@ -148,11 +148,12 @@ public class OrderServiceImpl implements OrderService {
      * @param outTradeNo
      */
     public void paySuccess(String outTradeNo) {
-        // 当前登录用户id
-        Long userId = BaseContext.getCurrentId();
-
-        // 根据订单号查询当前用户的订单
-        Orders ordersDB = orderMapper.getByNumberAndUserId(outTradeNo, userId);
+        // 支付回调由微信服务器发起, 请求里没有登录态(BaseContext 取不到 userId),
+        // 所以只能按商户订单号查订单——订单号本身唯一, 不需要也不能再拼 userId
+        Orders ordersDB = orderMapper.getByNumber(outTradeNo);
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
 
         // 根据订单id更新订单的状态、支付方式、支付状态、结账时间
         Orders orders = Orders.builder()
@@ -517,7 +518,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         HashMap map = new HashMap<>();
-        map.put("tpye",2);
+        map.put("type", 2); // 2表示客户催单
         map.put("orderId",ordersDB.getId());
         map.put("content","订单号"+ordersDB.getNumber());
 

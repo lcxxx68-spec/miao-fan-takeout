@@ -32,6 +32,17 @@ public interface OrderMapper {
     Orders getByNumberAndUserId(String orderNumber, Long userId);
 
     /**
+     * 根据订单号查询订单
+     * <p>
+     * 支付回调是微信服务器发起的, 请求里没有登录态, 拿不到 userId,
+     * 只能用商户订单号定位订单(订单号本身唯一)
+     *
+     * @param orderNumber
+     */
+    @Select("select * from orders where number = #{orderNumber}")
+    Orders getByNumber(String orderNumber);
+
+    /**
      * 修改订单信息
      * @param orders
      */
