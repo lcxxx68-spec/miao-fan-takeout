@@ -121,6 +121,9 @@ MF.pages = MF.pages || {};
                 MF.http.post('/employee/logout', {}).catch(function () {
                     /* 后端退出失败也要清掉本地登录态 */
                 }).finally(function () {
+                    if (MF.ws) {
+                        MF.ws.stop();
+                    }
                     MF.session.clear();
                     window.location.hash = '#/login';
                 });
@@ -182,6 +185,9 @@ MF.pages = MF.pages || {};
 
         if (route === 'login') {
             shellRendered = false;
+            if (MF.ws) {
+                MF.ws.stop();
+            }
             document.body.innerHTML = '<div id="content"></div>';
             MF.pages.login.render(document.getElementById('content'));
             return;
@@ -212,6 +218,11 @@ MF.pages = MF.pages || {};
         var content = document.getElementById('content');
         content.innerHTML = '';
         page.render(content);
+
+        // 已登录: 持有来单提醒的长连接(重复调用无副作用)
+        if (MF.ws) {
+            MF.ws.start();
+        }
     }
 
     MF.router = { current: currentRoute, render: render };
