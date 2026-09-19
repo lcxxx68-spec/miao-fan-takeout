@@ -27,6 +27,8 @@ nginx/html/miaofan/**/*.map
 # 内部交接/改造笔记: 含课程来源、简历话术等, 只在本机保留
 docs/会话交接.md
 docs/魔改计划.md
+# 面试演练错题本: 含简历话术, 只在本机保留
+docs/面试演练记录.md
 # 微信开发者工具的个人配置
 frontend-miniprogram/project.private.config.json
 
