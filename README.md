@@ -152,4 +152,10 @@ cd nginx && start nginx
 
 ## 界面截图
 
-待补充：管理端工作台、限时抢购页、小程序首页。
+**管理端 · 工作台**
+
+<img src="docs/images/admin-dashboard.png" width="830" alt="管理端工作台">
+
+**小程序 · 首页与限时抢购**
+
+<img src="docs/images/miniprogram-home.png" width="260" alt="小程序首页"> <img src="docs/images/miniprogram-seckill.png" width="260" alt="小程序限时抢购">
